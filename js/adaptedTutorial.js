@@ -20,11 +20,28 @@ function getData(){
     //load the data
     fetch("data/MegaCities.geojson")
         .then(function(response){
-            return response.json();
+            //create marker options
+            var geojsonMarkerOptions = {
+                radius: 8,
+                fillColor: "#ff7800",
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            };
+
+            L.geoJson(json, {
+                pointToLayer: function (feature, latlng){
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                }
+            }).addTo(map);
+        });
+
+/*             return response.json();
         })
         .then(function(json){
             L.geoJSON(json).addTo(map);
         })
-};
+}; */
 
 document.addEventListener('DOMContentLoaded',createMap)
