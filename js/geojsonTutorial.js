@@ -1,4 +1,4 @@
-var map = L.map('mapid').setView([39.75621, -104.99404], 13);
+// var map = L.map('mapid').setView([39.75621, -104.99404], 13);
 
 function onEachFeature(feature, layer) {
     if (feature.properties && feature.properties.popupContent) {
