@@ -1,5 +1,11 @@
 var map = L.map('mapid').setView([39.75621, -104.99404], 13);
 
+function onEachFeature(feature, layer) {
+    if (feature.properties && feature.properties.popupContent) {
+        layer.bindPopup(feature.properties.popupContent);
+    }
+}
+
 var geojsonFeature = {
     "type": "Feature",
     "properties": {
@@ -13,7 +19,9 @@ var geojsonFeature = {
     }
 };
 
-L.geoJSON(geojsonFeature).addTo(map);
+L.geoJSON(geojsonFeature, {
+    onEachFeature: onEachFeature
+}).addTo(map);
 
 var myLines = [{
     "type": "LineString",
@@ -83,29 +91,6 @@ L.geoJSON(geojsonFeature, {
     pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions);
     }
-}).addTo(map);
-
-function onEachFeature(feature, layer) {
-    if (feature.properties && feature.properties.popupContent) {
-        layer.bindPopup(feature.properties.popupContent);
-    }
-}
-
-var geojsonFeature = {
-    "type": "Feature",
-    "properties": {
-        "name": "Coors Field",
-        "amenity": "Baseball Stadium",
-        "popupContent": "This is where the Rockies play!"
-    },
-    "geometry": {
-        "type": "Point",
-        "coordinates": [-104.99404, 39.75621]
-    }
-};
-
-L.geoJSON(geojsonFeature, {
-    onEachFeature: onEachFeature
 }).addTo(map);
 
 var someFeatures = [{
