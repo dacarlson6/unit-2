@@ -91,7 +91,7 @@ L.geoJSON(geojsonFeature, {
     }
 }).addTo(map);
 
-var someFeatures = [{
+/* var someFeatures = [{
     "type": "Feature",
     "properties": {
         "name": "Coors Field",
@@ -111,7 +111,7 @@ var someFeatures = [{
         "type": "Point",
         "coordinates": [-104.98404, 39.74621]
     }
-}];
+}]; */
 
 L.geoJSON(someFeatures, {
     filter: function(feature, layer) {
