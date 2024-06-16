@@ -1,3 +1,5 @@
+var map = L.map('mapid').setView([39.75621, -104.99404], 13);
+
 var geojsonFeature = {
     "type": "Feature",
     "properties": {
