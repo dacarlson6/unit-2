@@ -12,7 +12,7 @@ function createMap(){
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
-    GamepadHapticActuator();
+    getData();
 };
 
 //function to retrieve the data and place it on the map
@@ -44,4 +44,4 @@ function getData(){
         })
 }; */
 
-document.addEventListener('DOMContentLoaded',createMap)
+document.addEventListener('DOMContentLoaded',createMap);
