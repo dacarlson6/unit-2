@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-            <title></title>
+            <title>Leaflet Map</title>
 
 
         <!--put your external stylesheet links here-->
@@ -12,7 +12,7 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script> -->
 
         <link rel="stylesheet" href="lib/leaflet.css">
-        <script src="lib/leaflet-src.js"></script>
+        
 
 
         <!--[if IE<9]>
@@ -20,25 +20,31 @@
         <![endif]-->
 
         <style>
-            #mydiv {
+            /* style for map container */
+            #mapid {
+                height: 100%;
+                width: 100%;
+            }
+
+           /*  #mydiv {
                 background-color: red;
                 width: 80%;
                 margin: 0 auto;
                 height: 100px;
-            }
+            } */
         </style>
         
          <!--you can also place internal styles here;
-             place these within <style> tags-->
-        
+             place these within <style> tags-->        
     </head>
 
     <body>
         <!--put your initial page content here-->
-        <div> id="mapid"></div>
+        <div id="mapid"></div>
 
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
+        <script src="lib/leaflet-src.js"></script>
         <!--<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script-->
 
         <!--put your external script links here-->
