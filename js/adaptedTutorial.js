@@ -37,12 +37,6 @@ function getData(){
             }).addTo(map);
         });
 
-/*             return response.json();
-        })
-        .then(function(json){
-            L.geoJSON(json).addTo(map);
-        })
-}; */
-
 document.addEventListener('DOMContentLoaded',createMap);
+
 }
