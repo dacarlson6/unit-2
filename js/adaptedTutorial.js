@@ -3,7 +3,7 @@
 var map;
 
 function createMap(){
-    map = L.map('map', {
+    map = L.map('mapid', {
         center: [20,0],
         zoom: 2
     });
