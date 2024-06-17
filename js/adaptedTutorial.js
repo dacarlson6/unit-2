@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
 function createMap(){
     var map = L.map('mapid', {
-        center: [40,-100],
+        center: [20,0],
         zoom: 2
     });
 
@@ -38,7 +38,18 @@ function getData(map){
             L.geoJSON(json, {
                 pointToLayer: function (feature, latlng){
                     return L.circleMarker(latlng, geojsonMarkerOptions);
-                }
+                },
+                onEachFeature: function(feature, layer) {
+                    var popupContent = "";
+                    if(feature.properties) {
+                        //loop to add feature property names and values to html string
+                        for (var property in feature.properties) {
+                            popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
+                        }
+                        layer.bindPopup(popupContent);
+                    };
+                };
+                
             }).addTo(map);
         });
 }
