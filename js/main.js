@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded',function() {
 
 function createMap(){
     var map = L.map('mapid', {
-        center: [20,0],
-        zoom: 2
+        center: [45,-85],
+        zoom: 6
     });
 
 // var map = L.map('mapid').setView([20, 0], 3);
@@ -41,11 +41,11 @@ function getData(map){
             //create marker options
             var geojsonMarkerOptions = {
                 radius: 8,
-                fillColor: "#ff7800",
-                color: "#000",
+                fillColor: "#0077be",
+                color: "#005a9c",
                 weight: 1,
                 opacity: 1,
-                fillOpacity: 0.8
+                fillOpacity: 0.7
             };
 
             L.geoJSON(json, {
