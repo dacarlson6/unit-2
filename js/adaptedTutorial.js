@@ -47,9 +47,8 @@ function getData(map){
                             popupContent += "<p>" + property + ": " + feature.properties[property] + "</p>";
                         }
                         layer.bindPopup(popupContent);
-                    };
-                };
-                
+                    }
+                }
             }).addTo(map);
         });
 }
