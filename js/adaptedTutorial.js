@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded',function() {
 function createMap(){
     var map = L.map('mapid', {
         center: [40,-100],
-        zoom: 10
+        zoom: 2
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -18,7 +18,7 @@ function createMap(){
 }
 
 //function to retrieve the data and place it on the map
-function getData(){
+function getData(map){
     //load the data
     fetch("data/MegaCities.geojson")
         .then(function(response) {
@@ -35,7 +35,7 @@ function getData(){
                 fillOpacity: 0.8
             };
 
-            L.geoJson(json, {
+            L.geoJSON(json, {
                 pointToLayer: function (feature, latlng){
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 }
