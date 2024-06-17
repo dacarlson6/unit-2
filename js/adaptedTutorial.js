@@ -1,9 +1,11 @@
 /*map of geojson data from MegaCities.geojson*/
 
-var map;
+document.addEventListener('DOMContentLoaded',function() {
+    createMap();
+});
 
 function createMap(){
-    map = L.map('mapid', {
+    var map = L.map('mapid', {
         center: [20,0],
         zoom: 2
     });
@@ -12,14 +14,17 @@ function createMap(){
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
     }).addTo(map);
 
-    getData();
-};
+    getData(map);
+}
 
 //function to retrieve the data and place it on the map
 function getData(){
     //load the data
     fetch("data/MegaCities.geojson")
-        .then(function(response){
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json){
             //create marker options
             var geojsonMarkerOptions = {
                 radius: 8,
@@ -36,7 +41,4 @@ function getData(){
                 }
             }).addTo(map);
         });
-
-document.addEventListener('DOMContentLoaded',createMap);
-
 }
