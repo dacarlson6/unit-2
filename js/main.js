@@ -53,7 +53,7 @@ function getData(map){
                     return L.circleMarker(latlng, geojsonMarkerOptions);
                 },
                 onEachFeature: function(feature, layer) {
-                    var popupContent = "";
+                    var popupContent = "<h3>Highest Water Level Reported by Station per Month</h3>";
                     if(feature.properties) {
                         //loop to add feature property names and values to html string
                         for (var property in feature.properties) {
