@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded',function() {
 
 function createMap(){
     var map = L.map('mapid', {
-        center: [20,0],
-        zoom: 2
+        center: [40,-100],
+        zoom: 10
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
