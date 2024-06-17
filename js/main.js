@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded',function() {
 
 function createMap(){
     var map = L.map('mapid', {
-        center: [45,0],
+        center: [44.5, -85.0],
         zoom: 6
     });
 
