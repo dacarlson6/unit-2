@@ -6,17 +6,18 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { // Changed h
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
 }).addTo(map); */
 
-document.addEventListener('DOMContentLoaded',function() {
+var map;
+var minValue;
+
+/* document.addEventListener('DOMContentLoaded',function() {
     createMap();
-});
+}); */
 
 function createMap(){
-    var map = L.map('mapid', {
+    map = L.map('mapid', {
         center: [44.5, -85.0],
         zoom: 6
     });
-
-// var map = L.map('mapid').setView([20, 0], 3);
 
 /* L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
@@ -28,7 +29,63 @@ function createMap(){
     }).addTo(map);
 
     getData(map);
+};
+
+function calculateMinValue(data){
+    //create empty array to store all data values
+    var allValues = [];
+    //loop through each city
+    for(var feature of data.features) {
+        //loop through each month
+        for(var property in feature.properties) {
+            if(!isNaN(feature.properties[property]) && property.startsWith("2023")) {
+                //add water levels to array
+                allValues.push(feature.properties[property]);
+            }
+        }
+    }
+    //get min value of our array
+    minValue = Math.min(...allValues);
+    return minValue;
 }
+
+//calculate the radius of each proportional symbol
+function calcPropRadius(attValue) {
+    //constant factor adjusts symbol sizes evenly
+    var minRadius = 5;
+    //Flannery Appearance Compensation formula
+    var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius;
+    return radius;
+}
+
+//step 3: add circle markers for point features to the map
+function createPropSymbols(data) {
+    //step 4: determine which attribute to visualize with proportional symbols
+    var attribute = "20231101";
+
+    //create marker options
+    var geojsonMarkerOptions = {
+        fillColor: "#0077be",
+        color: "#005a9c",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.7,
+        radius: 8
+    };
+
+    L.geoJSON(data, {
+        pointToLayer: function(feature, latlng) {
+            //step 5: for each feature, determine its value for the selected attribute
+            var attValue = Number(feature.properties[attribute]);
+
+            //step 6: give each feature's circle marker a radius based on its attribute value
+            geojsonMarkerOptions.radius = calcPropRadius(attValue);
+
+            //create circle markers
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+        }
+    }).addTo(map);
+};
 
 //function to retrieve the data and place it on the map
 function getData(map){
@@ -38,7 +95,20 @@ function getData(map){
             return response.json();
         })
         .then(function(json){
-            //create marker options
+            //calculate minimum data value
+            minValue = calculateMinValue(json);
+            //call function to create proportional symbols
+            createPropSymbols(json);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', createMap);
+            
+            
+            
+            
+            
+            /* //create marker options
             var geojsonMarkerOptions = {
                 radius: 8,
                 fillColor: "#0077be",
@@ -64,4 +134,4 @@ function getData(map){
                 }
             }).addTo(map);
         });
-}
+} */
