@@ -22,5 +22,14 @@
     }
 
     .range-slider {
-        width: 30%;
+        width: 40%;
+    }
+
+    .step {
+        width: 20%;
+        display: inline-block;
+    }
+
+    .step img {
+        width: 100%;
     }
