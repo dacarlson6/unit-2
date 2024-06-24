@@ -24,30 +24,25 @@
 }
 
 .step {
-    width: 49%;  /* Each button should take about half the width of the panel */
+    width: 30%;  /* Reduce the width to better fit the panel */
     padding: 5px; /* Padding inside the buttons */
-    margin-top: 5px; /* Space above the buttons */
+    margin: 2px auto; /* Centers buttons and provides a little vertical space */
     background-color: #f4f4f4; /* Light grey background */
     border: 1px solid #ccc; /* Light grey border */
-    border-radius: 5px; /* Rounded corners for better aesthetics */
-    text-align: center; /* Centers the content of the button */
-}
+    border-radius: 5px; /* Rounded corners for aesthetics */
+    cursor: pointer; /* Changes the mouse cursor to pointer when hovering over the button */
+    display: block; /* Ensures each button appears on its own line */
+}  
 
 .step img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Ensures the image fills the button */
+    height: auto; /* Keeps the image aspect ratio */
 }
 
+/* Remove float properties and ensure buttons align nicely in the panel */
 #forward, #reverse {
-    display: inline-block; /* Ensures buttons are lined up horizontally */
-}
-
-#forward {
-    float: right;
-}
-
-#reverse {
-    float: left;
+    width: 100%; /* Full width for easier touch */
+    margin: 5px 0; /* Space between buttons */
 }
 
 /*adjusting popup content margins in style.css*/
