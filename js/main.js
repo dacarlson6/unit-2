@@ -125,7 +125,7 @@ function createSequenceControls(attributes) {
     var forwardButton = "<button class='step' id='forward'>Forward</button>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
-        
+
 }
 
 function setupEventListeners(attributes){
@@ -183,7 +183,7 @@ function processData(data){
     };
     console.log(attributes);
     return attributes;
-}
+};
 
 //function to retrieve the data and place it on the map
 function getData(map){
@@ -200,7 +200,7 @@ function getData(map){
             //call function to create proportional symbols
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
-        });
-}
+        })
+};
 
 document.addEventListener('DOMContentLoaded', createMap);
