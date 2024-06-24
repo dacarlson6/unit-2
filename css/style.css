@@ -27,7 +27,7 @@
     width: 20%; 
 }  
 
-.step img {
+/* .step img {
     width: 100%; 
 }
 
@@ -37,7 +37,7 @@
 
 #reverse {
     float: left;
-}
+} */
 
 /*adjusting popup content margins in style.css*/
 .leaflet-popup-content p {
