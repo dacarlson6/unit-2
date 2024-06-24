@@ -95,6 +95,23 @@ function createSequenceControls(data) {
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 };
 
+//build an attributes array
+function processData(data){
+    //empty array to hold attributes
+    var attributes = [];
+    //properties of the first feature in the dataset
+    var properties = data.features[0].properties;
+
+    //push each attribute name into attributes array
+    for(var attribute in properties){
+        if(attribute.startsWith("2023")) {
+            attributes.push(attribute);
+        };
+    };
+    console.log(attributes);
+    return attributes;
+}
+
 //function to retrieve the data and place it on the map
 function getData(map){
     //load the data
