@@ -1,35 +1,37 @@
 /*Add CSS styles here*/
-#mapid { height: 180px; }
+/* #mapid { height: 180px; } */
+
+
+
+#mapid, #map {
+    height: 400px;
+    width: 80%;
+    display: inline-block;
+}
+    
+#panel {
+    width: 16%;
+    padding: 20px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    line-height: 42px;
+}
+
+.range-slider {
+    width: 40%;
+}
+
+.step {
+    width: 20%;
+    display: inline-block;
+}
+
+.step img {
+    width: 100%;
+}
 
 /*adjusting popup content margins in style.css*/
 .leaflet-popup-content p {
     margin: 0.2em 0;
 }
-
-#map {
-    height: 400px;
-    width: 80%;
-    display: inline-block;
-    }
-    
-    #panel {
-        width: 16%;
-        padding: 20px;
-        display: inline-block;
-        vertical-align: top;
-        text-align: center;
-        line-height: 42px;
-    }
-
-    .range-slider {
-        width: 40%;
-    }
-
-    .step {
-        width: 20%;
-        display: inline-block;
-    }
-
-    .step img {
-        width: 100%;
-    }
