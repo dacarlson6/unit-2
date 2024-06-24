@@ -5,3 +5,18 @@
 .leaflet-popup-content p {
     margin: 0.2em 0;
 }
+
+#map {
+    height: 400px;
+    width: 80%;
+    display: inline-block;
+    }
+    
+    #panel {
+        width: 16%;
+        padding: 20px;
+        display: inline-block;
+        vertical-align: top;
+        text-align: center;
+        line-height: 42px;
+    }
