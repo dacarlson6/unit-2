@@ -103,10 +103,10 @@ function createSequenceControls(attributes) {
     setupEventListeners(attributes);
 
     //set slider attributes
-    /* document.querySelector(".range-slider").max = 6;
+    document.querySelector(".range-slider").max = 6;
     document.querySelector(".range-slider").min = 0;
     document.querySelector(".range-slider").value = 0;
-    document.querySelector(".range-slider").step = 1; */
+    document.querySelector(".range-slider").step = 1;
 
     /* //add step buttons
     document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
