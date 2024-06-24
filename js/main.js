@@ -99,11 +99,14 @@ function createSequenceControls(attributes) {
     // var slider = "<input class='range-slider' type='range'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 
+    //set up slider and button events
+    setupEventListeners(attributes);
+
     //set slider attributes
-    document.querySelector(".range-slider").max = 6;
+    /* document.querySelector(".range-slider").max = 6;
     document.querySelector(".range-slider").min = 0;
     document.querySelector(".range-slider").value = 0;
-    document.querySelector(".range-slider").step = 1;
+    document.querySelector(".range-slider").step = 1; */
 
     /* //add step buttons
     document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
@@ -122,8 +125,7 @@ function createSequenceControls(attributes) {
     var forwardButton = "<button class='step' id='forward'>Forward</button>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
-
-    setupEventListeners(attributes);
+        
 }
 
 function setupEventListeners(attributes){
@@ -175,9 +177,9 @@ function processData(data){
 
     //push each attribute name into attributes array
     for(var attribute in properties){
-        if(attribute.startsWith("2023")) {
+        if (attribute.startsWith("2023") || attribute.startsWith("2024")){
             attributes.push(attribute);
-        };
+        }
     };
     console.log(attributes);
     return attributes;
