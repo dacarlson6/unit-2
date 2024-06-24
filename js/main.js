@@ -105,8 +105,9 @@ function createSequenceControls(attributes) {
     document.querySelector(".range-slider").step = 1;
 
     //add step buttons
-    document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/reverse.png'>");
-    document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>");
+    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
+    // document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/reverse.png'>");
+    // document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>");
 };
 
 //build an attributes array
