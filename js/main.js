@@ -95,7 +95,8 @@ function createPropSymbols(data, attributes) {
 //create new sequence controls
 function createSequenceControls(attributes) {    
     //create range input element (slider)
-    var slider = "<input class='range-slider' type='range'></input>";
+    var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
+    // var slider = "<input class='range-slider' type='range'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 
     //set slider attributes
@@ -116,7 +117,54 @@ function createSequenceControls(attributes) {
     var forwardButton = "<button class='step' id='forward'><img src='img/forward.png'></button>";
     document.querySelector('#panel').insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector('#panel').insertAdjacentHTML('beforeend', forwardButton); */
-};
+
+    var reverseButton = "<button class='step' id='reverse'>Reverse</button>";
+    var forwardButton = "<button class='step' id='forward'>Forward</button>";
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
+
+    setupEventListeners(attributes);
+}
+
+function setupEventListeners(attributes){
+    document.querySelector('.range-slider').addEventListener('input', function(){
+        updatePropSymbols(attributes[this.value]);
+    });
+
+    document.querySelectorAll('.step').forEach(function(step){
+        step.addEventListener("click", function(){
+            var slider = document.querySelector('.range-slider');
+            var index = parseInt(slider.value);
+            var max = parseInt(slider.max);
+
+            if (this.id === 'forward'){
+                slider.value = (index < max) ? index + 1 : 0;
+            } else if (this.id === 'reverse'){
+                slider.value = (index > 0) ? index - 1 : max;
+            }
+
+            updatePropSymbols(attributes[slider.value]);
+        })
+    });
+}
+
+function updatePropSymbols(attribute){
+    map.eachLayer(function(layer){
+        if (layer.feature && layer.feature.properties[attribute]){
+            // Access feature properties
+            var props = layer.feature.properties;
+
+            // Update each feature's radius based on new attribute values
+            var radius = calcPropRadius(props[attribute]);
+            layer.setRadius(radius);
+
+            // Update popup content
+            var popupContent = "<p><b>Station:</b> " + props.StationName + "</p>";
+            popupContent += "<p><b>Water Level on " + attribute + ":</b> " + props[attribute] + " ft</p>";
+            layer.getPopup().setContent(popupContent).update();
+        };
+    });
+}
 
 //build an attributes array
 function processData(data){
