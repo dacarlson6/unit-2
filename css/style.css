@@ -10,7 +10,7 @@
 }
     
 #panel {
-    width: 16%;
+    width: 20%;
     padding: 20px;
     display: inline-block;
     vertical-align: top;
@@ -19,7 +19,8 @@
 }
 
 .range-slider {
-    width: 40%;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .step {
@@ -29,6 +30,7 @@
 
 .step img {
     width: 100%;
+    height: auto;
 }
 
 #forward {
