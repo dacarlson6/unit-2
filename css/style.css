@@ -20,3 +20,7 @@
         text-align: center;
         line-height: 42px;
     }
+
+    .range-slider {
+        width: 30%;
+    }
