@@ -1,4 +1,3 @@
-
 var map;
 var minValue;
 
@@ -96,7 +95,6 @@ function createPropSymbols(data, attributes) {
 function createSequenceControls(attributes) {    
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
-    // var slider = "<input class='range-slider' type='range'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
 
     //set slider attributes
@@ -105,41 +103,23 @@ function createSequenceControls(attributes) {
     document.querySelector(".range-slider").value = 0;
     document.querySelector(".range-slider").step = 1;
 
-    /* //add step buttons
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="reverse">Reverse</button>');
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', '<button class="step" id="forward">Forward</button>'); */
-
-    // document.querySelector('#reverse').insertAdjacentHTML('beforeend',"<img src='img/reverse.png'>");
-    // document.querySelector('#forward').insertAdjacentHTML('beforeend',"<img src='img/forward.png'>");
-
-    // Add step buttons with images
-    /* var reverseButton = "<button class='step' id='reverse'><img src='img/reverse.png'></button>";
-    var forwardButton = "<button class='step' id='forward'><img src='img/forward.png'></button>";
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', reverseButton);
-    document.querySelector('#panel').insertAdjacentHTML('beforeend', forwardButton); */
-
     var reverseButton = "<button class='step' id='reverse'>Reverse</button>";
     var forwardButton = "<button class='step' id='forward'>Forward</button>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
-    //set up slider and button events
+    //slider and button events
     setupEventListeners(attributes);
 }
 
 function setupEventListeners(attributes){
     document.querySelector('.range-slider').addEventListener('input', function(){
-
         updatePropSymbols(attributes[this.value]);
     });
 
     document.querySelectorAll('.step').forEach(function(step){
         step.addEventListener("click", function(){
             var index = document.querySelector('.range-slider').value;
-
-            //var slider = document.querySelector('.range-slider');
-            //var index = parseInt(slider.value);
-            //var max = parseInt(slider.max);
 
             if (this.id === 'forward'){
                 index++;
@@ -154,16 +134,6 @@ function setupEventListeners(attributes){
             document.querySelector('.range-slider').value = index;
         })
     })
-
-   /*              slider.value = (index < max) ? index + 1 : 0;
-            } else if (this.id === 'reverse'){
-                slider.value = (index > 0) ? index - 1 : max;
-            }
-
-            updatePropSymbols(attributes[slider.value]);
-        })
-    });
-} */
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
@@ -181,7 +151,6 @@ function updatePropSymbols(attribute){
 
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
-            // layer.getPopup().setContent(popupContent).update();
         };
     });
 };
