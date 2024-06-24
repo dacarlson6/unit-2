@@ -97,10 +97,7 @@ function createSequenceControls(attributes) {
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
     // var slider = "<input class='range-slider' type='range'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
-
-    //set up slider and button events
-    setupEventListeners(attributes);
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
 
     //set slider attributes
     document.querySelector(".range-slider").max = 6;
@@ -126,6 +123,8 @@ function createSequenceControls(attributes) {
     document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
+    //set up slider and button events
+    setupEventListeners(attributes);
 }
 
 function setupEventListeners(attributes){
