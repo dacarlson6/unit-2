@@ -129,17 +129,33 @@ function createSequenceControls(attributes) {
 
 function setupEventListeners(attributes){
     document.querySelector('.range-slider').addEventListener('input', function(){
+
         updatePropSymbols(attributes[this.value]);
     });
 
     document.querySelectorAll('.step').forEach(function(step){
         step.addEventListener("click", function(){
-            var slider = document.querySelector('.range-slider');
-            var index = parseInt(slider.value);
-            var max = parseInt(slider.max);
+            var index = document.querySelector('.range-slider').value;
+
+            //var slider = document.querySelector('.range-slider');
+            //var index = parseInt(slider.value);
+            //var max = parseInt(slider.max);
 
             if (this.id === 'forward'){
-                slider.value = (index < max) ? index + 1 : 0;
+                index++;
+
+                index = index > 6 ? 0 : index;
+            } else if (step.id == 'reverse'){
+                index--;
+
+                index = index < 0 ? 6 : index;
+            };
+
+            document.querySelector('.range-slider').value = index;
+        })
+    })
+
+   /*              slider.value = (index < max) ? index + 1 : 0;
             } else if (this.id === 'reverse'){
                 slider.value = (index > 0) ? index - 1 : max;
             }
@@ -147,7 +163,7 @@ function setupEventListeners(attributes){
             updatePropSymbols(attributes[slider.value]);
         })
     });
-}
+} */
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
@@ -168,7 +184,7 @@ function updatePropSymbols(attribute){
             // layer.getPopup().setContent(popupContent).update();
         };
     });
-}
+};
 
 //build an attributes array
 function processData(data){
