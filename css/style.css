@@ -24,12 +24,17 @@
 }
 
 .step {
-    width: 5%;
-    display: inline-block;
+    width: 49%;  /* Each button should take about half the width of the panel */
+    padding: 5px; /* Padding inside the buttons */
+    margin-top: 5px; /* Space above the buttons */
+    background-color: #f4f4f4; /* Light grey background */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 5px; /* Rounded corners for better aesthetics */
+    text-align: center; /* Centers the content of the button */
 }
 
 .step img {
-    width: 20%;
+    width: 100%;
     height: auto;
 }
 
