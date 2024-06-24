@@ -38,6 +38,10 @@
     height: auto;
 }
 
+#forward, #reverse {
+    display: inline-block; /* Ensures buttons are lined up horizontally */
+}
+
 #forward {
     float: right;
 }
