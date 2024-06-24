@@ -112,4 +112,6 @@ function getData(map){
         });
 }
 
-document.addEventListener('DOMContentLoaded', createMap);
+document.addEventListener('DOMContentLoaded', function() {
+    createSequenceControls();
+});
