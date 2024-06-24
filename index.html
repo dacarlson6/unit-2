@@ -18,14 +18,27 @@
             #mapid {
                 height: 100%;
                 width: 100%;
-            }        
+            }     
+            #panel {
+                width: 20%;
+                padding: 20px;
+                position: absolute; /* Position it over the map */
+                right: 10px; /* Position it on the right side */
+                top: 10px; /* Position it at the top */
+                background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+                z-index: 1000; /* Ensure it's above the map */
+                border-radius: 8px; /* Rounded corners for aesthetics */
+            }
+            .range-slider {
+                width: 100%;
+            }
         </style>                        
     </head>
     
     <body>
         <!--put your initial page content here-->
         <!-- <div id="mapid"></div> -->
-        <div id="map"></div>
+        <div id="mapid"></div>
         <div id="panel"></div>
 
         <!--you can also use this space for internal scripts;

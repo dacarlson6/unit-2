@@ -89,8 +89,7 @@ function createPropSymbols(data) {
 };
 
 //create new sequence controls
-function createSequenceControls(data) {
-    
+function createSequenceControls(data) {    
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
@@ -112,6 +111,4 @@ function getData(map){
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    createSequenceControls();
-});
+document.addEventListener('DOMContentLoaded', createMap);
