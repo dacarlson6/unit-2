@@ -44,9 +44,11 @@ function calcPropRadius(attValue) {
 }
 
 //function to convert markers to circle markers
-function pointToLayer(feature, latlng) {
+function pointToLayer(feature, latlng, attributes) {
     //determine which attribute to visualize with proportional symbols
-    var attribute = "20231101";
+    var attribute = attributes[0];
+    //check
+    console.log(attribute);
 
     //create marker options
     var options = {
@@ -81,15 +83,17 @@ function pointToLayer(feature, latlng) {
 };
 
 //add circle markers for point features to the map
-function createPropSymbols(data) {
+function createPropSymbols(data, attributes) {
     //create a Leaflet GeoJSON layer and add it to the map
     L.geoJSON(data, {
-        pointToLayer: pointToLayer
+        pointToLayer: function(feature, latlng){
+            return pointToLayer(feature, latlng, attributes);
+        }
     }).addTo(map);
 };
 
 //create new sequence controls
-function createSequenceControls(data) {    
+function createSequenceControls(attributes) {    
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
@@ -120,11 +124,13 @@ function getData(map){
             return response.json();
         })
         .then(function(json){
+            //create an attributes array
+            var attributes = processData(json);
             //calculate minimum data value
             minValue = calculateMinValue(json);
             //call function to create proportional symbols
-            createPropSymbols(json);
-            createSequenceControls(json);
+            createPropSymbols(json, attributes);
+            createSequenceControls(attributes);
         });
 }
 
