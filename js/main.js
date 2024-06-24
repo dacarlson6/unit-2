@@ -58,13 +58,13 @@ function calcPropRadius(attValue) {
     return radius;
 }
 
-//step 3: add circle markers for point features to the map
-function createPropSymbols(data) {
-    //step 4: determine which attribute to visualize with proportional symbols
+//function to convert markers to circle markers
+function pointToLayer(feature, latlng) {
+    //determine which attribute to visualize with proportional symbols
     var attribute = "20231101";
 
     //create marker options
-    var geojsonMarkerOptions = {
+    var options = {
         fillColor: "#0077be",
         color: "#005a9c",
         weight: 1,
@@ -73,7 +73,39 @@ function createPropSymbols(data) {
         radius: 8
     };
 
+    //for each feature, determine its value for the selected attribute
+    var attValue = Number(feature.properties[attribute]);
+
+    //give each feature's circle marker a radius based on its attribute value
+    options.radius = calcPropRadius(attValue);
+
+    //create circle marker layer
+    var layer = L.circleMarker(latlng, options);
+
+    //build popup content string
+    var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
+    popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
+
+    //bind the popup to the circle marker
+    layer.bindPopup(popupContent, {
+        offset: new L.Point(0, -options.radius)
+    });
+
+    //return the circle marker to the L.geojson pointToLayer option
+    return layer;
+};
+
+//add circle markers for point features to the map
+function createPropSymbols(data) {
+    //create a Leaflet GeoJSON layer and add it to the map
     L.geoJSON(data, {
+        pointToLayer: pointToLayer
+    }).addTo(map);
+};
+
+
+
+/*     L.geoJSON(data, {
         pointToLayer: function(feature, latlng) {
             //step 5: for each feature, determine its value for the selected attribute
             var attValue = Number(feature.properties[attribute]);
@@ -85,7 +117,7 @@ function createPropSymbols(data) {
             return L.circleMarker(latlng, geojsonMarkerOptions);
         }
     }).addTo(map);
-};
+}; */
 
 //function to retrieve the data and place it on the map
 function getData(map){

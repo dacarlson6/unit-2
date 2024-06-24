@@ -1,2 +1,7 @@
 /*Add CSS styles here*/
 #mapid { height: 180px; }
+
+/*adjusting popup content margins in style.css*/
+.leaflet-popup-content p {
+    margin: 0.2em 0;
+}
