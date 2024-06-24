@@ -108,7 +108,7 @@ function getData(map){
             minValue = calculateMinValue(json);
             //call function to create proportional symbols
             createPropSymbols(json);
-            createSequenceControls();
+            createSequenceControls(json);
         });
 }
 
