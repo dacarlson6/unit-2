@@ -153,17 +153,20 @@ function setupEventListeners(attributes){
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
         if (layer.feature && layer.feature.properties[attribute]){
-            // Access feature properties
+            //access feature properties
             var props = layer.feature.properties;
 
-            // Update each feature's radius based on new attribute values
+            //update each feature's radius based on new attribute values
             var radius = calcPropRadius(props[attribute]);
             layer.setRadius(radius);
 
-            // Update popup content
+            //update popup content
             var popupContent = "<p><b>Station:</b> " + props.StationName + "</p>";
             popupContent += "<p><b>Water Level on " + attribute + ":</b> " + props[attribute] + " ft</p>";
-            layer.getPopup().setContent(popupContent).update();
+
+            popup = layer.getPopup();
+            popup.setContent(popupContent).update();
+            // layer.getPopup().setContent(popupContent).update();
         };
     });
 }
@@ -183,7 +186,7 @@ function processData(data){
     };
     console.log(attributes);
     return attributes;
-};
+}
 
 //function to retrieve the data and place it on the map
 function getData(map){
