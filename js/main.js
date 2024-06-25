@@ -77,18 +77,26 @@ function createPropSymbols(data, attributes) {
 }
 
 function createSequenceControls(attributes) {
+
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
+    // var reverseButton = "<button class='step' id='reverse'>Reverse</button>";
+    // var forwardButton = "<button class='step' id='forward'>Forward</button>";
+    var reverseButtonImg = "<img src='img/reverse.png' class='step' id='reverse' style='cursor:pointer;'>";
+    var forwardButtonImg = "<img src='img/forward.png' class='step' id='forward' style='cursor:pointer;'>";
+
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButtonImg);
+
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 
     document.querySelector(".range-slider").max = attributes.length - 1;
     document.querySelector(".range-slider").min = 0;
     document.querySelector(".range-slider").value = 0;
     document.querySelector(".range-slider").step = 1;
+   
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButtonImg);
 
-    var reverseButton = "<button class='step' id='reverse'>Reverse</button>";
-    var forwardButton = "<button class='step' id='forward'>Forward</button>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
+     // document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
+    // document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
     setupEventListeners(attributes);
 }
