@@ -125,17 +125,15 @@ function setupEventListeners(attributes){
                 index++;
 
                 index = index > 6 ? 0 : index;
-            } else if (step.id == 'reverse'){
+            } else if (this.id == 'reverse'){
                 index--;
 
                 index = index < 0 ? 6 : index;
             };
 
-            //document.querySelector('.range-slider').value = index;
-            document.querySelector('.range-slider').addEventListener('input', function(){
-                updatePropSymbols(this.value);
-            })
-        })
+            document.querySelector('.range-slider').value = index;
+            updatePropSymbols(attributes[index]);
+        });    
     });
 }
 
@@ -155,9 +153,9 @@ function updatePropSymbols(attribute){
 
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
-        };
+        }
     });
-};
+}
 
 //build an attributes array
 function processData(data){
