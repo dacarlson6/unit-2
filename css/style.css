@@ -1,7 +1,12 @@
 /*Add CSS styles here*/
 /* #mapid { height: 180px; } */
 
-
+/* for the buttons */
+.step {
+    cursor: pointer;
+    width: 50px; 
+    height: 50px; 
+}
 
 #mapid, #map {
     height: 100%;
