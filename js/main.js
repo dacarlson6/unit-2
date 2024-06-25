@@ -131,7 +131,10 @@ function setupEventListeners(attributes){
                 index = index < 0 ? 6 : index;
             };
 
-            document.querySelector('.range-slider').value = index;
+            //document.querySelector('.range-slider').value = index;
+            document.querySelector('.range-slider').addEventListener('input', function(){
+                updatePropSymbols(this.value);
+            })
         })
     });
 }
