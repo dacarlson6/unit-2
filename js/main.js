@@ -133,7 +133,8 @@ function setupEventListeners(attributes){
 
             document.querySelector('.range-slider').value = index;
         })
-    })
+    });
+}
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
@@ -191,4 +192,3 @@ function getData(map){
 };
 
 document.addEventListener('DOMContentLoaded', createMap);
-}
