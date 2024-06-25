@@ -1,7 +1,7 @@
 var map;
-var minValue;
+var averages = {};
 
-function createMap(){
+function createMap() {
     map = L.map('mapid', {
         center: [44.5, -85.0],
         zoom: 6
@@ -13,43 +13,37 @@ function createMap(){
     }).addTo(map);
 
     getData(map);
-};
-
-function calculateMinValue(data){
-    //create empty array to store all data values
-    var allValues = [];
-    //loop through each city
-    for(var feature of data.features) {
-        //loop through each month
-        for(var property in feature.properties) {
-            if(!isNaN(feature.properties[property]) && property.startsWith("2023")) {
-                //add water levels to array
-                allValues.push(feature.properties[property]);
-            }
-        }
-    }
-    //get min value of our array
-    minValue = Math.min(...allValues);
-    return minValue;
 }
 
-//calculate the radius of each proportional symbol
-function calcPropRadius(attValue) {
-    //constant factor adjusts symbol sizes evenly
+function calculateAverages(data) {
+    data.features.forEach(function(feature) {
+        var total = 0;
+        var count = 0;
+
+        for (var property in feature.properties) {
+            if (!isNaN(feature.properties[property]) && (property.startsWith("2023") || property.startsWith("2024"))) {
+                total += feature.properties[property];
+                count++;
+            }
+        }
+
+        var average = total / count;
+        averages[feature.properties.StationName] = average;
+    });
+}
+
+function calcPropRadius(attValue, avgValue) {
     var minRadius = 5;
-    //Flannery Appearance Compensation formula
-    var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius;
+    var scaleFactor = 10; // Adjust this factor as needed to make changes more visible
+    var radius = 1.0083 * Math.pow(Math.abs(attValue - avgValue) * scaleFactor, 0.5715) * minRadius;
     return radius;
 }
 
-//function to convert markers to circle markers
 function pointToLayer(feature, latlng, attributes) {
-    //determine which attribute to visualize with proportional symbols
     var attribute = attributes[0];
-    //check
-    console.log(attribute);
+    var avgValue = averages[feature.properties.StationName];
+    var attValue = Number(feature.properties[attribute]);
 
-    //create marker options
     var options = {
         fillColor: "#0077be",
         color: "#005a9c",
@@ -59,46 +53,34 @@ function pointToLayer(feature, latlng, attributes) {
         radius: 8
     };
 
-    //for each feature, determine its value for the selected attribute
-    var attValue = Number(feature.properties[attribute]);
+    options.radius = calcPropRadius(attValue, avgValue);
 
-    //give each feature's circle marker a radius based on its attribute value
-    options.radius = calcPropRadius(attValue);
-
-    //create circle marker layer
     var layer = L.circleMarker(latlng, options);
 
-    //build popup content string
     var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
     popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
+    popupContent += "<p><b>Change from Average:</b> " + (attValue - avgValue).toFixed(2) + " ft</p>";
 
-    //bind the popup to the circle marker
     layer.bindPopup(popupContent, {
         offset: new L.Point(0, -options.radius)
     });
 
-    //return the circle marker to the L.geojson pointToLayer option
     return layer;
-};
+}
 
-//add circle markers for point features to the map
 function createPropSymbols(data, attributes) {
-    //create a Leaflet GeoJSON layer and add it to the map
     L.geoJSON(data, {
-        pointToLayer: function(feature, latlng){
+        pointToLayer: function (feature, latlng) {
             return pointToLayer(feature, latlng, attributes);
         }
     }).addTo(map);
-};
+}
 
-//create new sequence controls
-function createSequenceControls(attributes) {    
-    //create range input element (slider)
+function createSequenceControls(attributes) {
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
+    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);
 
-    //set slider attributes
-    document.querySelector(".range-slider").max = 6;
+    document.querySelector(".range-slider").max = attributes.length - 1;
     document.querySelector(".range-slider").min = 0;
     document.querySelector(".range-slider").value = 0;
     document.querySelector(".range-slider").step = 1;
@@ -108,88 +90,74 @@ function createSequenceControls(attributes) {
     document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
-    //slider and button events
     setupEventListeners(attributes);
 }
 
-function setupEventListeners(attributes){
-    document.querySelector('.range-slider').addEventListener('input', function(){
+function setupEventListeners(attributes) {
+    document.querySelector('.range-slider').addEventListener('input', function () {
         updatePropSymbols(attributes[this.value]);
     });
 
-    document.querySelectorAll('.step').forEach(function(step){
-        step.addEventListener("click", function(){
+    document.querySelectorAll('.step').forEach(function (step) {
+        step.addEventListener("click", function () {
             var index = document.querySelector('.range-slider').value;
 
-            if (this.id === 'forward'){
+            if (this.id === 'forward') {
                 index++;
-
-                index = index > 6 ? 0 : index;
-            } else if (this.id == 'reverse'){
+                index = index > attributes.length - 1 ? 0 : index;
+            } else if (this.id == 'reverse') {
                 index--;
-
-                index = index < 0 ? 6 : index;
-            };
+                index = index < 0 ? attributes.length - 1 : index;
+            }
 
             document.querySelector('.range-slider').value = index;
             updatePropSymbols(attributes[index]);
-        });    
+        });
     });
 }
 
-function updatePropSymbols(attribute){
-    map.eachLayer(function(layer){
-        if (layer.feature && layer.feature.properties[attribute]){
-            //access feature properties
+function updatePropSymbols(attribute) {
+    map.eachLayer(function (layer) {
+        if (layer.feature && layer.feature.properties[attribute]) {
             var props = layer.feature.properties;
-
-            //update each feature's radius based on new attribute values
-            var radius = calcPropRadius(props[attribute]);
+            var avgValue = averages[props.StationName];
+            var radius = calcPropRadius(props[attribute], avgValue);
             layer.setRadius(radius);
 
-            //update popup content
             var popupContent = "<p><b>Station:</b> " + props.StationName + "</p>";
             popupContent += "<p><b>Water Level on " + attribute + ":</b> " + props[attribute] + " ft</p>";
+            popupContent += "<p><b>Change from Average:</b> " + (props[attribute] - avgValue).toFixed(2) + " ft</p>";
 
-            popup = layer.getPopup();
+            var popup = layer.getPopup();
             popup.setContent(popupContent).update();
         }
     });
 }
 
-//build an attributes array
-function processData(data){
-    //empty array to hold attributes
+function processData(data) {
     var attributes = [];
-    //properties of the first feature in the dataset
     var properties = data.features[0].properties;
 
-    //push each attribute name into attributes array
-    for(var attribute in properties){
-        if (attribute.startsWith("2023") || attribute.startsWith("2024")){
+    for (var attribute in properties) {
+        if (attribute.startsWith("2023") || attribute.startsWith("2024")) {
             attributes.push(attribute);
         }
-    };
+    }
     console.log(attributes);
     return attributes;
 }
 
-//function to retrieve the data and place it on the map
-function getData(map){
-    //load the data
+function getData(map) {
     fetch("data/WaterLevels.geojson")
-        .then(function(response) {
+        .then(function (response) {
             return response.json();
         })
-        .then(function(json){
-            //create an attributes array
+        .then(function (json) {
             var attributes = processData(json);
-            //calculate minimum data value
-            minValue = calculateMinValue(json);
-            //call function to create proportional symbols
+            calculateAverages(json);
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
-        })
-};
+        });
+}
 
 document.addEventListener('DOMContentLoaded', createMap);
