@@ -99,12 +99,14 @@ function createSequenceControls(attributes) {
             position: 'bottomleft'
         },
 
-        onAdd: function () {
+        onAdd: function (map) {
             //create the control container div with a particular class name
             var container = L.DomUtil.create('div', 'sequence-control-container');
 
             //create range input element (slider)
-            container.insertAdjacentHTML('beforeend', '<input class="range-slider" type="range>')
+            //container.insertAdjacentHTML('beforeend', '<input class="range-slider" type="range>')
+            container.innerHTML = '<input class="range-slider" type="range" min="0" max="' + (attributes.length - 1) + '" value="0" step="1"><button class="step" id="reverse">Reverse</button><button class="step" id="forward">Forward</button>';
+            setupEventListeners(attributes, container);
 
             return container;
         }
@@ -136,12 +138,38 @@ function createSequenceControls(attributes) {
     setupEventListeners(attributes);
 }
 
-function setupEventListeners(attributes){
-    document.querySelector('.range-slider').addEventListener('input', function(){
+function setupEventListeners(attributes, container){
+    var slider = container.querySelector('.range-slider');
+    var reverseButton = container.querySelector('#reverse');
+    var forwardButton = container.querySelector('#forward');
+
+    slider.addEventListener('input', function(){
         updatePropSymbols(attributes[this.value]);
     });
 
-    document.querySelectorAll('.step').forEach(function(step){
+    reverseButton.addEventListener('click', function(){
+        var index = parseInt(slider.value);
+        index = index > 0 ? index - 1 : attributes.length - 1;
+        slider.value = index;
+        updatePropSymbols(attributes[index]);
+    });
+
+    forwardButton.addEventListener('click', function(){
+        var index = parseInt(slider.value);
+        index = index < attributes.length - 1 ? index + 1 : 0;
+        slider.value = index;
+        updatePropSymbols(attributes[index]);
+    });
+}
+
+
+
+
+    //document.querySelector('.range-slider').addEventListener('input', function(){
+       // updatePropSymbols(attributes[this.value]);
+    //});
+
+   /*  document.querySelectorAll('.step').forEach(function(step){
         step.addEventListener("click", function(){
             var index = document.querySelector('.range-slider').value;
 
@@ -159,7 +187,7 @@ function setupEventListeners(attributes){
             updatePropSymbols(attributes[index]);
         });    
     });
-}
+} */
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
