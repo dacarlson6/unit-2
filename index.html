@@ -17,19 +17,24 @@
             /* style for map container */
             #mapid {
                 height: 100%;
-                width: 80%;
-                display: inline-block;
+                width: 100%;
             }     
-            #panel {
-                width: 16%;
-                padding: 20px;
-                display: inline-block;
-                vertical-align: top;
-                text-align: center;
-                line-height: 42px;
+            .sequence-control-container {  
+            width: 300px;  
+            background-color: rgba(255,255,255,0.8);  
+            padding: 5px 10px;  
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);  
+            text-align: center;  
+            border-radius: 5px;  
             }
             .range-slider {
                 width: 100%;
+            }
+            button.step {
+            width: 50px;
+            margin: 0 5px;
+            height: 24px;
+            vertical-align: middle;
             }
         </style>
     </head>
@@ -37,7 +42,6 @@
     <body>
         <!--put your initial page content here-->
         <div id="mapid"></div>
-        <div id="panel"></div>
 
         <!--you can also use this space for internal scripts;
         place these within <script> tags-->
