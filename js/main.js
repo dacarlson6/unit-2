@@ -103,6 +103,9 @@ function createSequenceControls(attributes) {
             //create the control container div with a particular class name
             var container = L.DomUtil.create('div', 'sequence-control-container');
 
+            //create range input element (slider)
+            container.insertAdjacentHTML('beforeend', '<input class="range-slider" type="range>')
+
             return container;
         }
     });
