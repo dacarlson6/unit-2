@@ -107,6 +107,7 @@ function createSequenceControls(attributes) {
         }
     });
 
+    map.addControl(new SequenceControl());
 
 
 
