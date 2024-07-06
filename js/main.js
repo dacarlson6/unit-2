@@ -15,6 +15,7 @@ function createMap(){
     getData(map);
 };
 
+
 function calculateMinValue(data){
     //create empty array to store all data values
     var allValues = [];
@@ -92,7 +93,26 @@ function createPropSymbols(data, attributes) {
 };
 
 //create new sequence controls
-function createSequenceControls(attributes) {    
+function createSequenceControls(attributes) {
+    var SequenceControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function () {
+            //create the control container div with a particular class name
+            var container = L.DomUtil.create('div', 'sequence-control-container');
+
+            return container;
+        }
+    });
+
+
+
+
+
+
+    
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
