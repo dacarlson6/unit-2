@@ -15,6 +15,22 @@ function createMap(){
     getData(map);
 };
 
+function calcStats(data){
+    //create empty array to store all data values
+    var allValues = [];
+
+    for(var feature of data.features){
+        for(var property in feature.properties) {
+            var value = feature.properties[property];
+            if(!isNaN(value)) {
+                allValues.push(value);
+            }
+        }
+    }
+    minValue = Math.min(...allValues);
+    maxValue = Math.max(...allValues);
+    meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
+}
 
 function calculateMinValue(data){
     //create empty array to store all data values
@@ -197,6 +213,11 @@ function createLegend(attributes){
         onAdd: function() {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
+            var svg = `<svg id="attribute-legend" width="130px" height="130px">
+            <circle cx="90" cy="90" r="${50 * meanValue/maxValue}" fill="#F47821" fill-opacity="0.8" stroke="#000" />
+            <circle cx="90" cy="90" r="${50 * minValue/maxValue}" fill="#F47821" fill-opacity="0.8" stroke="#000" />
+            <circle cx="90" cy="90" r="50" fill="#F47821" fill-opacity="0.8" stroke="#000" />
+            </svg>`;
             container.innerHTML = '<h4>Legend</h4><div id="temporal-legend">Date: ' + 
                                     formatDate(attributes[0]) + '</div>';
 
@@ -266,6 +287,7 @@ function getData(map){
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
             createLegend(attributes);
+            calcStats(response);
         });
 };
 
