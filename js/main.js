@@ -1,6 +1,6 @@
 var map;
-var minValue;
-//var dataStats = {};
+var minValue, maxValue, meanValue;
+var dataStats = {};
 
 function createMap(){
     map = L.map('mapid', {
@@ -31,6 +31,10 @@ function calcStats(data){
     minValue = Math.min(...allValues);
     maxValue = Math.max(...allValues);
     meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
+
+    dataStats.min = minValue;
+    dataStats.max = maxValue;
+    dataStats.mean = meanValue;
 }
 
 function calculateMinValue(data){
@@ -197,11 +201,17 @@ function formatDate(dateStr) {
 }
 
 //update legend with correct date
-function updateLegend(date) {
-    var legend = document.getElementById('temporal-legend');
-    if (legend) {
-        legend.innerHTML = 'Date: ' + formatDate(date);
-    }
+function updateLegend(container) {
+    var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
+    ['min', 'mean', 'max'].forEach((key, idx) => {
+        var value = dataStats[key];
+        var radius = calcPropRadius(value);
+        var y = 50 + (50 - radius); // Adjust to stack properly
+        svg += `<circle cx="${50 + idx * 50}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
+        svg += `<text x="${50 + idx * 50}" y="${90}" text-anchor="middle">${key}: ${value.toFixed(1)}</text>`;
+    });
+    svg += `</svg>`;
+    container.innerHTML = svg;
 }
 
 //create legend
@@ -214,30 +224,11 @@ function createLegend(attributes){
         onAdd: function(map) {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-            var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
-            ['min', 'mean', 'max'].forEach((key, idx) => {
-                var value = dataStats[key];
-                var radius = calcPropRadius(value);
-                var y = 50 + (50 - radius); // Center vertically based on radius
-                svg += `<circle cx="${50 + idx * 50}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
-                svg += `<text x="${50 + idx * 50}" y="${90}" text-anchor="middle">${key}: ${value.toFixed(1)}</text>`;
-            });
-            svg += `</svg>`;
-            container.innerHTML = svg;
-            
-            
-            
-            
-            /* container.innerHTML = '<h4>Water Levels</h4>' + 
-            '<svg id="attribute-legend" width="180px" height="180px">' +
-            '<circle cx="90" cy="90" r="' + 50 * meanValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
-            '<circle cx="90" cy="90" r="' + 50 * minValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
-            '<circle cx="90" cy="90" r="50" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
-            '</svg>' +
-            '<div id="temporal-legend">Date: ' + formatDate(attributes[0]) + '</div>';*/
+            updateLegend(container);
             return container;
         }
     });
+
     map.addControl(new LegendControl());
 }
 
@@ -263,9 +254,13 @@ function updatePropSymbols(attribute){
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
 
-            updateLegend(attribute);
+            //updateLegend(attribute);
         }
     });
+    var legendContainer = document.querySelector('.legend-control-container');
+    if (legendContainer) {
+        updateLegend(legendContainer); //update the legend to reflect changes
+    }
 }
 
 //build an attributes array
