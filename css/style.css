@@ -20,8 +20,18 @@
 }
 
 .step {
-    width: 40px; 
+    width: 45%;
+    margin: 2px;
+    padding: 5px 10px;
+    text-align: center;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    cursor: pointer; 
 }  
+
+.step:hover {
+    background-color: #e2e2e2;  /* Slight change on hover for feedback */
+}
 
 /*adjusting popup content margins in style.css*/
 .leaflet-popup-content p {
