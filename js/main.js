@@ -151,7 +151,7 @@ function createSequenceControls(attributes) {
 
 
 
-    //create range input element (slider)
+    /* //create range input element (slider)
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
 
@@ -167,10 +167,10 @@ function createSequenceControls(attributes) {
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
     //slider and button events
-    setupEventListeners(attributes);
+    setupEventListeners(attributes); */
 
 
-/* function setupEventListeners(attributes, container){
+    function setupEventListeners(attributes, container){
     var slider = container.querySelector('.range-slider');
     var reverseButton = container.querySelector('#reverse');
     var forwardButton = container.querySelector('#forward');
@@ -192,7 +192,7 @@ function createSequenceControls(attributes) {
         slider.value = index;
         updatePropSymbols(attributes[index]);
     });
-} */
+}
 
 
 
