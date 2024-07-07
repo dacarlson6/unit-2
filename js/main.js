@@ -120,6 +120,7 @@ function createSequenceControls(attributes) {
             var reverseButton = L.DomUtil.create('button', 'step', container);
             reverseButton.id = 'reverse';
             reverseButton.textContent = 'Reverse';
+
             var forwardButton = L.DomUtil.create('button', 'step', container);
             forwardButton.id = 'forward';
             forwardButton.textContent = 'Forward';
@@ -143,6 +144,7 @@ function createSequenceControls(attributes) {
     });
 
     map.addControl(new SequenceControl());
+}
 
 
 
@@ -166,7 +168,7 @@ function createSequenceControls(attributes) {
 
     //slider and button events
     setupEventListeners(attributes); */
-}
+
 
 /* function setupEventListeners(attributes, container){
     var slider = container.querySelector('.range-slider');
