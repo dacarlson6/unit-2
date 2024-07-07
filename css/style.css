@@ -61,3 +61,10 @@
 #temporal-legend {
     font-size: 16px;
 }
+
+.legend-control-container {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #bbb;
+    padding: 10px;
+    border-radius: 5px;
+}
