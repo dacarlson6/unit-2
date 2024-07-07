@@ -102,11 +102,41 @@ function createSequenceControls(attributes) {
         onAdd: function (map) {
             //create the control container div with a particular class name
             var container = L.DomUtil.create('div', 'sequence-control-container');
+            L.DomEvent.diableClickPropagation(container);
 
             //create range input element (slider)
-            //container.insertAdjacentHTML('beforeend', '<input class="range-slider" type="range>')
-            container.innerHTML = '<input class="range-slider" type="range" min="0" max="' + (attributes.length - 1) + '" value="0" step="1"><button class="step" id="reverse">Reverse</button><button class="step" id="forward">Forward</button>';
-            setupEventListeners(attributes, container);
+            var slider = L.DomUtil.create('input', 'range-slider', container);
+            slider.type = 'range';
+            slider.min = 0;
+            slider.max = 6;
+            slider.value = 0;
+            slider.step = 1;
+
+            slider.addEventListener('input', function () {
+                updatePropSymbols(attributes[this.value]);
+            });
+
+            //buttons
+            var reverseButton = L.DomUtil.create('button', 'step', container);
+            reverseButton.id = 'reverse';
+            reverseButton.textContent = 'Reverse';
+            var forwardButton = L.DomUtil.create('button', 'step', container);
+            forwardButton.id = 'forward';
+            forwardButton.textContent = 'Forward';
+
+            reverseButton.addEventListener('click', function () {
+                var index = parseInt(slider.value);
+                index = index > 0 ? index - 1 : attributes.length - 1;
+                slider.value = index;
+                updatePropSymbols(attributes[index]);
+            });
+    
+            forwardButton.addEventListener('click', function () {
+                var index = parseInt(slider.value);
+                index = index < attributes.length - 1 ? index + 1 : 0;
+                slider.value = index;
+                updatePropSymbols(attributes[index]);
+            });            
 
             return container;
         }
@@ -118,7 +148,7 @@ function createSequenceControls(attributes) {
 
 
 
-    
+   /*  
     //create range input element (slider)
     var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
     document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
@@ -135,10 +165,10 @@ function createSequenceControls(attributes) {
     document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
 
     //slider and button events
-    setupEventListeners(attributes);
+    setupEventListeners(attributes); */
 }
 
-function setupEventListeners(attributes, container){
+/* function setupEventListeners(attributes, container){
     var slider = container.querySelector('.range-slider');
     var reverseButton = container.querySelector('#reverse');
     var forwardButton = container.querySelector('#forward');
@@ -160,7 +190,7 @@ function setupEventListeners(attributes, container){
         slider.value = index;
         updatePropSymbols(attributes[index]);
     });
-}
+} */
 
 
 

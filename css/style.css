@@ -1,23 +1,10 @@
-/*Add CSS styles here*/
-/* #mapid { height: 180px; } */
-
-
 
 #mapid, #map {
     height: 100%;
-    width: 80%;
+    width: 100%;
     display: inline-block;
 }
     
-#panel {
-    width: 16%;
-    padding: 20px;
-    display: inline-block;
-    vertical-align: top;
-    text-align: center;
-    line-height: 42px;
-}
-
 .sequence-control-container {  
     width: 350px;  
     height: 30px;  
@@ -35,18 +22,6 @@
 .step {
     width: 40px; 
 }  
-
-/* .step img {
-    width: 100%; 
-}
-
-#forward {
-    float: right;
-}
-
-#reverse {
-    float: left;
-} */
 
 /*adjusting popup content margins in style.css*/
 .leaflet-popup-content p {
