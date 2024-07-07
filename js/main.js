@@ -181,6 +181,12 @@ function createLegend(attributes){
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
 
+            //initialize the legend content
+            var legendContent = L.DomUtil.create('div', 'legend-content', container);
+            legendContent.innerHTML = '<h4>Temporal Legend</h4>' + 
+                                      '<div id="temporal-legend">' + 
+                                      'Year: ' + attributes[0].split("_")[1] + '</div>';
+
             return container;
         }
     });
