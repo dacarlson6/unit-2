@@ -170,6 +170,23 @@ function createSequenceControls(attributes) {
     });
 }
 
+//function to format date from YYYYMMDD to "Month YYYY"
+function formatDate(dateStr) {
+    var year = dateStr.substring(0,4);
+    var month = dateStr.substring(4,6);
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+    return monthNames[parseInt(month) - 1] + " " + year;
+}
+
+//update legend with correct date
+function updateLegend(date) {
+    var legend = document.getElementById('temporal-legend');
+    if (legend) {
+        legend.innerHTML = 'Date: ' + formatDate(date);
+    }
+}
+
 //create legend
 function createLegend(attributes){
     var LegendControl = L.Control.extend({
@@ -180,19 +197,15 @@ function createLegend(attributes){
         onAdd: function() {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-
-            //initialize the legend content
-            var legendContent = L.DomUtil.create('div', 'legend-content', container);
-            legendContent.innerHTML = '<h4>Temporal Legend</h4>' + 
-                                      '<div id="temporal-legend">' + 
-                                      'Year: ' + attributes[0].split("_")[1] + '</div>';
+            container.innerHTML = '<h4>Legend</h4><div id="temporal-legend">Date: ' + 
+                                    formatDate(attributes[0]) + '</div>';
 
             return container;
         }
     });
-
     map.addControl(new LegendControl());
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     createMap();
     createLegend(attributes);
@@ -215,10 +228,7 @@ function updatePropSymbols(attribute){
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
 
-            var legend = document.getElementById('temporal-legend');
-            if (legend) {
-                legend.innerHTML = 'Year: ' + attribute.split("_")[1];
-            }
+            updateLegend(attribute);
         }
     });
 }
