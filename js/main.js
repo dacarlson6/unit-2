@@ -186,7 +186,11 @@ function createLegend(attributes){
     });
 
     map.addControl(new LegendControl());
-};
+}
+document.addEventListener('DOMContentLoaded', function() {
+    createMap();
+    createLegend(attributes);
+});
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
