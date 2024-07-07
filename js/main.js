@@ -1,5 +1,6 @@
 var map;
 var minValue;
+//var dataStats = {};
 
 function createMap(){
     map = L.map('mapid', {
@@ -213,14 +214,28 @@ function createLegend(attributes){
         onAdd: function(map) {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-            container.innerHTML = '<h4>Water Levels</h4>' + 
+            var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
+            ['min', 'mean', 'max'].forEach((key, idx) => {
+                var value = dataStats[key];
+                var radius = calcPropRadius(value);
+                var y = 50 + (50 - radius); // Center vertically based on radius
+                svg += `<circle cx="${50 + idx * 50}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
+                svg += `<text x="${50 + idx * 50}" y="${90}" text-anchor="middle">${key}: ${value.toFixed(1)}</text>`;
+            });
+            svg += `</svg>`;
+            container.innerHTML = svg;
+            
+            
+            
+            
+            /* container.innerHTML = '<h4>Water Levels</h4>' + 
             '<svg id="attribute-legend" width="180px" height="180px">' +
             '<circle cx="90" cy="90" r="' + 50 * meanValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
             '<circle cx="90" cy="90" r="' + 50 * minValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
             '<circle cx="90" cy="90" r="50" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
             '</svg>' +
-            '<div id="temporal-legend">Date: ' + formatDate(attributes[0]) + '</div>';
-        return container;
+            '<div id="temporal-legend">Date: ' + formatDate(attributes[0]) + '</div>';*/
+            return container;
         }
     });
     map.addControl(new LegendControl());
