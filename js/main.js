@@ -146,30 +146,6 @@ function createSequenceControls(attributes) {
     map.addControl(new SequenceControl());
 }
 
-
-
-
-
-
-    /* //create range input element (slider)
-    var slider = "<input class='range-slider' type='range' min='0' max='" + (attributes.length - 1) + "' value='0' step='1'></input>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', slider);  
-
-    //set slider attributes
-    document.querySelector(".range-slider").max = 6;
-    document.querySelector(".range-slider").min = 0;
-    document.querySelector(".range-slider").value = 0;
-    document.querySelector(".range-slider").step = 1;
-
-    var reverseButton = "<button class='step' id='reverse'>Reverse</button>";
-    var forwardButton = "<button class='step' id='forward'>Forward</button>";
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', reverseButton);
-    document.querySelector("#panel").insertAdjacentHTML('beforeend', forwardButton);
-
-    //slider and button events
-    setupEventListeners(attributes); */
-
-
     function setupEventListeners(attributes, container){
     var slider = container.querySelector('.range-slider');
     var reverseButton = container.querySelector('#reverse');
@@ -194,32 +170,23 @@ function createSequenceControls(attributes) {
     });
 }
 
+//create legend
+function createLegend(attributes){
+    var LegendControl = L.Control.extend({
+        options: {
+            position: "bottomright"
+        },
 
+        onAdd: function() {
+            //create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
 
-
-    //document.querySelector('.range-slider').addEventListener('input', function(){
-       // updatePropSymbols(attributes[this.value]);
-    //});
-
-   /*  document.querySelectorAll('.step').forEach(function(step){
-        step.addEventListener("click", function(){
-            var index = document.querySelector('.range-slider').value;
-
-            if (this.id === 'forward'){
-                index++;
-
-                index = index > 6 ? 0 : index;
-            } else if (this.id == 'reverse'){
-                index--;
-
-                index = index < 0 ? 6 : index;
-            };
-
-            document.querySelector('.range-slider').value = index;
-            updatePropSymbols(attributes[index]);
-        });    
+            return container;
+        }
     });
-} */
+
+    map.addControl(new LegendControl());
+};
 
 function updatePropSymbols(attribute){
     map.eachLayer(function(layer){
@@ -237,6 +204,11 @@ function updatePropSymbols(attribute){
 
             popup = layer.getPopup();
             popup.setContent(popupContent).update();
+
+            var legend = document.getElementById('temporal-legend');
+            if (legend) {
+                legend.innerHTML = 'Year: ' + attribute.split("_")[1];
+            }
         }
     });
 }
