@@ -210,18 +210,17 @@ function createLegend(attributes){
             position: "bottomright"
         },
 
-        onAdd: function() {
+        onAdd: function(map) {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-            var svg = `<svg id="attribute-legend" width="130px" height="130px">
-            <circle cx="90" cy="90" r="${50 * meanValue/maxValue}" fill="#F47821" fill-opacity="0.8" stroke="#000" />
-            <circle cx="90" cy="90" r="${50 * minValue/maxValue}" fill="#F47821" fill-opacity="0.8" stroke="#000" />
-            <circle cx="90" cy="90" r="50" fill="#F47821" fill-opacity="0.8" stroke="#000" />
-            </svg>`;
-            container.innerHTML = '<h4>Legend</h4><div id="temporal-legend">Date: ' + 
-                                    formatDate(attributes[0]) + '</div>';
-
-            return container;
+            container.innerHTML = '<h4>Water Levels</h4>' + 
+            '<svg id="attribute-legend" width="180px" height="180px">' +
+            '<circle cx="90" cy="90" r="' + 50 * meanValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
+            '<circle cx="90" cy="90" r="' + 50 * minValue / maxValue + '" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
+            '<circle cx="90" cy="90" r="50" fill="#F47821" fill-opacity="0.8" stroke="#000" />' +
+            '</svg>' +
+            '<div id="temporal-legend">Date: ' + formatDate(attributes[0]) + '</div>';
+        return container;
         }
     });
     map.addControl(new LegendControl());
@@ -281,13 +280,14 @@ function getData(map){
         .then(function(json){
             //create an attributes array
             var attributes = processData(json);
+            calcStats(json); //calculate min, max, mean statistics
             //calculate minimum data value
-            minValue = calculateMinValue(json);
+           // minValue = calculateMinValue(json);
             //call function to create proportional symbols
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
             createLegend(attributes);
-            calcStats(response);
+            
         });
 };
 
