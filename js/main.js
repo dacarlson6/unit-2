@@ -108,7 +108,7 @@ function createSequenceControls(attributes) {
             var slider = L.DomUtil.create('input', 'range-slider', container);
             slider.type = 'range';
             slider.min = 0;
-            slider.max = 6;
+            slider.max = attributes.length - 1;
             slider.value = 0;
             slider.step = 1;
 
