@@ -102,7 +102,7 @@ function createSequenceControls(attributes) {
         onAdd: function (map) {
             //create the control container div with a particular class name
             var container = L.DomUtil.create('div', 'sequence-control-container');
-            L.DomEvent.diableClickPropagation(container);
+            L.DomEvent.disableClickPropagation(container);
 
             //create range input element (slider)
             var slider = L.DomUtil.create('input', 'range-slider', container);
