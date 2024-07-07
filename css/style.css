@@ -9,23 +9,27 @@
     width: 300px;  
     height: auto;  
     background-color: rgba(255,255,255,0.8);  
-    padding: 10px;  
-    line-height: normal;  
+    padding: 5px;  
     text-align: center;  
-    border: solid gray 1px;  
+    border: solid gray 1px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .range-slider {
-    width: 250px;
+    width: 80%;
+    margin-top: 10px;
 }
 
 .step {
-    width: 45%;
+    flex-grow: 1;
     margin: 2px;
     padding: 5px 10px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: center;
     background-color: #f4f4f4;
+    box-sizing: border-box;
     border: 1px solid #ccc;
     cursor: pointer; 
 }  
