@@ -6,11 +6,11 @@
 }
     
 .sequence-control-container {  
-    width: 350px;  
-    height: 30px;  
+    width: 300px;  
+    height: auto;  
     background-color: rgba(255,255,255,0.8);  
     padding: 10px;  
-    line-height: 45px;  
+    line-height: normal;  
     text-align: center;  
     border: solid gray 1px;  
 }
@@ -23,6 +23,7 @@
     width: 45%;
     margin: 2px;
     padding: 5px 10px;
+    font-size: 14px;
     text-align: center;
     background-color: #f4f4f4;
     border: 1px solid #ccc;
