@@ -31,10 +31,15 @@ function calcStats(data){
     minValue = Math.min(...allValues);
     maxValue = Math.max(...allValues);
     meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
+}
 
-    dataStats.min = minValue;
-    dataStats.max = maxValue;
-    dataStats.mean = meanValue;
+//calculate the radius of each proportional symbol
+function calcPropRadius(attValue) {
+    //constant factor adjusts symbol sizes evenly
+    var minRadius = 5;
+    //Flannery Appearance Compensation formula
+    var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius;
+    return radius;
 }
 
 function calculateMinValue(data){
@@ -53,15 +58,6 @@ function calculateMinValue(data){
     //get min value of our array
     minValue = Math.min(...allValues);
     return minValue;
-}
-
-//calculate the radius of each proportional symbol
-function calcPropRadius(attValue) {
-    //constant factor adjusts symbol sizes evenly
-    var minRadius = 5;
-    //Flannery Appearance Compensation formula
-    var radius = 1.0083 * Math.pow(attValue/minValue,0.5715) * minRadius;
-    return radius;
 }
 
 //function to convert markers to circle markers
@@ -201,14 +197,16 @@ function formatDate(dateStr) {
 }
 
 //update legend with correct date
-function updateLegend(container) {
+function updateLegend(attribute) {
+    if (!container) return;
+
     var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
     ['min', 'mean', 'max'].forEach((key, idx) => {
         var value = dataStats[key];
         var radius = calcPropRadius(value);
-        var y = 50 + (50 - radius); // Adjust to stack properly
-        svg += `<circle cx="${50 + idx * 50}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
-        svg += `<text x="${50 + idx * 50}" y="${90}" text-anchor="middle">${key}: ${value.toFixed(1)}</text>`;
+        var y = 100 - radius;  // Center the circles vertically
+        svg += `<circle cx="${30 + idx * 60}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
+        svg += `<text x="${30 + idx * 60}" y="${y + 20}" text-anchor="middle" font-size="12">${key.toUpperCase()}: ${value.toFixed(1)}</text>`;
     });
     svg += `</svg>`;
     container.innerHTML = svg;
@@ -224,7 +222,7 @@ function createLegend(attributes){
         onAdd: function(map) {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-            updateLegend(container);
+            updateLegend(attributes[0]);
             return container;
         }
     });
@@ -257,10 +255,7 @@ function updatePropSymbols(attribute){
             //updateLegend(attribute);
         }
     });
-    var legendContainer = document.querySelector('.legend-control-container');
-    if (legendContainer) {
-        updateLegend(legendContainer); //update the legend to reflect changes
-    }
+    updateLegend(attribute);
 }
 
 //build an attributes array
@@ -275,8 +270,7 @@ function processData(data){
         if (attribute.startsWith("2023") || attribute.startsWith("2024")){
             attributes.push(attribute);
         }
-    };
-    console.log(attributes);
+    }
     return attributes;
 }
 
