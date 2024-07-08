@@ -34,7 +34,7 @@
 }  
 
 .step:hover {
-    background-color: #e2e2e2;  /* Slight change on hover for feedback */
+    background-color: #e2e2e2;
 }
 
 /*adjusting popup content margins in style.css*/
@@ -60,13 +60,6 @@
 
 #temporal-legend {
     font-size: 16px;
-}
-
-.legend-control-container {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #bbb;
-    padding: 10px;
-    border-radius: 5px;
 }
 
 
