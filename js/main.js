@@ -153,8 +153,7 @@ function createSequenceControls(attributes) {
                 index = index < attributes.length - 1 ? index + 1 : 0;
                 slider.value = index;
                 updatePropSymbols(attributes[index]);
-            });            
-
+            });
             return container;
         }
     });
@@ -213,7 +212,7 @@ function createLegend(attributes){
         onAdd: function() {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
-            
+            container.innerHTML = '<h3>Water Levels</h3>';
             return container;
         }
     });
@@ -281,7 +280,7 @@ function getData(map){
             createSequenceControls(attributes);
             createLegend(attributes);
             //calcStats(response);
-        })
+        });
 };
 
 document.addEventListener('DOMContentLoaded', createMap);
