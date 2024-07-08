@@ -19,7 +19,6 @@ function createMap(){
 function calcStats(data){
     //create empty array to store all data values
     var allValues = [];
-
     for(var feature of data.features){
         for(var property in feature.properties) {
             var value = feature.properties[property];
@@ -31,6 +30,7 @@ function calcStats(data){
     minValue = Math.min(...allValues);
     maxValue = Math.max(...allValues);
     meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
+    dataStats = {min: minValue, max: maxValue, mean: meanValue};
 }
 
 //calculate the radius of each proportional symbol
@@ -42,24 +42,6 @@ function calcPropRadius(attValue) {
     return radius;
 }
 
-function calculateMinValue(data){
-    //create empty array to store all data values
-    var allValues = [];
-    //loop through each city
-    for(var feature of data.features) {
-        //loop through each month
-        for(var property in feature.properties) {
-            if(!isNaN(feature.properties[property]) && property.startsWith("2023")) {
-                //add water levels to array
-                allValues.push(feature.properties[property]);
-            }
-        }
-    }
-    //get min value of our array
-    minValue = Math.min(...allValues);
-    return minValue;
-}
-
 //add circle markers for point features to the map
 function createPropSymbols(data, attributes) {
     //create a Leaflet GeoJSON layer and add it to the map
@@ -67,6 +49,7 @@ function createPropSymbols(data, attributes) {
         pointToLayer: function(feature, latlng){
             //determine which attribute to visualize with proportional symbols
             var attribute = attributes[0];
+            var attValue = Number(feature.properties[attribute]);
             //create marker options
             var options = {
                 fillColor: "#0077be",
@@ -74,60 +57,17 @@ function createPropSymbols(data, attributes) {
                 weight: 1,
                 opacity: 1,
                 fillOpacity: 0.7,
-                radius: calcPropRadius(Number(feature.properties[attribute]))
+                radius: calcPropRadius(attValue)
             };
             var layer = L.circleMarker(latlng, options);
             //build popup content string
             var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
             popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
             layer.bindPopup(popupContent);
-            return layer;
-
-            //return pointToLayer(feature, latlng, attributes);
+            return layer;            
         }
     }).addTo(map);
-};
-
-/* //function to convert markers to circle markers
-function pointToLayer(feature, latlng, attributes) {
-    //determine which attribute to visualize with proportional symbols
-    var attribute = attributes[0];
-    //check
-    console.log(attribute);
-
-    //create marker options
-    var options = {
-        fillColor: "#0077be",
-        color: "#005a9c",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.7,
-        radius: 8
-    };
-
-    //for each feature, determine its value for the selected attribute
-    var attValue = Number(feature.properties[attribute]);
-
-    //give each feature's circle marker a radius based on its attribute value
-    options.radius = calcPropRadius(attValue);
-
-    //create circle marker layer
-    var layer = L.circleMarker(latlng, options);
-
-    //build popup content string
-    var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
-    popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
-
-    //bind the popup to the circle marker
-    layer.bindPopup(popupContent, {
-        offset: new L.Point(0, -options.radius)
-    });
-
-    //return the circle marker to the L.geojson pointToLayer option
-    return layer;
-}; */
-
-
+}
 
 //create new sequence controls
 function createSequenceControls(attributes) {
@@ -220,8 +160,27 @@ function createLegend(attributes){
             return container;
         }
     });
-
     map.addControl(new LegendControl());
+}
+
+
+
+function calculateMinValue(data){
+    //create empty array to store all data values
+    var allValues = [];
+    //loop through each city
+    for(var feature of data.features) {
+        //loop through each month
+        for(var property in feature.properties) {
+            if(!isNaN(feature.properties[property]) && property.startsWith("2023")) {
+                //add water levels to array
+                allValues.push(feature.properties[property]);
+            }
+        }
+    }
+    //get min value of our array
+    minValue = Math.min(...allValues);
+    return minValue;
 }
 
 //update legend with correct date
@@ -239,6 +198,56 @@ function updateLegend(attribute) {
     svg += `</svg>`;
     container.innerHTML = svg;
 }
+
+
+/* //function to convert markers to circle markers
+function pointToLayer(feature, latlng, attributes) {
+    //determine which attribute to visualize with proportional symbols
+    var attribute = attributes[0];
+    //check
+    console.log(attribute);
+
+    //create marker options
+    var options = {
+        fillColor: "#0077be",
+        color: "#005a9c",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.7,
+        radius: 8
+    };
+
+    //for each feature, determine its value for the selected attribute
+    var attValue = Number(feature.properties[attribute]);
+
+    //give each feature's circle marker a radius based on its attribute value
+    options.radius = calcPropRadius(attValue);
+
+    //create circle marker layer
+    var layer = L.circleMarker(latlng, options);
+
+    //build popup content string
+    var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
+    popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
+
+    //bind the popup to the circle marker
+    layer.bindPopup(popupContent, {
+        offset: new L.Point(0, -options.radius)
+    });
+
+    //return the circle marker to the L.geojson pointToLayer option
+    return layer;
+}; */
+
+
+
+
+
+
+
+
+
+
 
 //build an attributes array
 function processData(data){
