@@ -279,7 +279,7 @@ function getData(map){
             //call function to create proportional symbols
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
-            //createLegend(attributes);
+            createLegend(attributes);
             //calcStats(response);
         })
 };
