@@ -60,7 +60,35 @@ function calculateMinValue(data){
     return minValue;
 }
 
-//function to convert markers to circle markers
+//add circle markers for point features to the map
+function createPropSymbols(data, attributes) {
+    //create a Leaflet GeoJSON layer and add it to the map
+    L.geoJSON(data, {
+        pointToLayer: function(feature, latlng){
+            //determine which attribute to visualize with proportional symbols
+            var attribute = attributes[0];
+            //create marker options
+            var options = {
+                fillColor: "#0077be",
+                color: "#005a9c",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.7,
+                radius: calcPropRadius(Number(feature.properties[attribute]))
+            };
+            var layer = L.circleMarker(latlng, options);
+            //build popup content string
+            var popupContent = "<p><b>Station:</b> " + feature.properties.StationName + "</p>";
+            popupContent += "<p><b>Water Level on " + attribute + ":</b> " + attValue + " ft</p>";
+            layer.bindPopup(popupContent);
+            return layer;
+
+            //return pointToLayer(feature, latlng, attributes);
+        }
+    }).addTo(map);
+};
+
+/* //function to convert markers to circle markers
 function pointToLayer(feature, latlng, attributes) {
     //determine which attribute to visualize with proportional symbols
     var attribute = attributes[0];
@@ -97,17 +125,9 @@ function pointToLayer(feature, latlng, attributes) {
 
     //return the circle marker to the L.geojson pointToLayer option
     return layer;
-};
+}; */
 
-//add circle markers for point features to the map
-function createPropSymbols(data, attributes) {
-    //create a Leaflet GeoJSON layer and add it to the map
-    L.geoJSON(data, {
-        pointToLayer: function(feature, latlng){
-            return pointToLayer(feature, latlng, attributes);
-        }
-    }).addTo(map);
-};
+
 
 //create new sequence controls
 function createSequenceControls(attributes) {
@@ -163,40 +183,28 @@ function createSequenceControls(attributes) {
     map.addControl(new SequenceControl());
 }
 
-    function setupEventListeners(attributes, container){
-    var slider = container.querySelector('.range-slider');
-    var reverseButton = container.querySelector('#reverse');
-    var forwardButton = container.querySelector('#forward');
+function updatePropSymbols(attribute){
+    map.eachLayer(function(layer){
+        if (layer.feature && layer.feature.properties[attribute]){
+            //access feature properties
+            var props = layer.feature.properties;
 
-    slider.addEventListener('input', function(){
-        updatePropSymbols(attributes[this.value]);
-    });
+            //update each feature's radius based on new attribute values
+            var radius = calcPropRadius(props[attribute]);
+            layer.setRadius(radius);
 
-    reverseButton.addEventListener('click', function(){
-        var index = parseInt(slider.value);
-        index = index > 0 ? index - 1 : attributes.length - 1;
-        slider.value = index;
-        updatePropSymbols(attributes[index]);
-    });
+            //update popup content
+            var popupContent = "<p><b>Station:</b> " + props.StationName + "</p>";
+            popupContent += "<p><b>Water Level on " + attribute + ":</b> " + props[attribute] + " ft</p>";
 
-    forwardButton.addEventListener('click', function(){
-        var index = parseInt(slider.value);
-        index = index < attributes.length - 1 ? index + 1 : 0;
-        slider.value = index;
-        updatePropSymbols(attributes[index]);
+            popup = layer.getPopup();
+            popup.setContent(popupContent).update();
+
+            //updateLegend(attribute);
+        }
     });
+    updateLegend(attribute);
 }
-
-//function to format date from YYYYMMDD to "Month YYYY"
-function formatDate(dateStr) {
-    var year = dateStr.substring(0,4);
-    var month = dateStr.substring(4,6);
-    var monthNames = ["January", "February", "March", "April", "May", "June",
-                      "July", "August", "September", "October", "November", "December"];
-    return monthNames[parseInt(month) - 1] + " " + year;
-}
-
-
 
 //create legend
 function createLegend(attributes){
@@ -248,34 +256,45 @@ function processData(data){
     return attributes;
 }
 
+
+    function setupEventListeners(attributes, container){
+    var slider = container.querySelector('.range-slider');
+    var reverseButton = container.querySelector('#reverse');
+    var forwardButton = container.querySelector('#forward');
+
+    slider.addEventListener('input', function(){
+        updatePropSymbols(attributes[this.value]);
+    });
+
+    reverseButton.addEventListener('click', function(){
+        var index = parseInt(slider.value);
+        index = index > 0 ? index - 1 : attributes.length - 1;
+        slider.value = index;
+        updatePropSymbols(attributes[index]);
+    });
+
+    forwardButton.addEventListener('click', function(){
+        var index = parseInt(slider.value);
+        index = index < attributes.length - 1 ? index + 1 : 0;
+        slider.value = index;
+        updatePropSymbols(attributes[index]);
+    });
+}
+
+//function to format date from YYYYMMDD to "Month YYYY"
+function formatDate(dateStr) {
+    var year = dateStr.substring(0,4);
+    var month = dateStr.substring(4,6);
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+    return monthNames[parseInt(month) - 1] + " " + year;
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
     createMap();
     createLegend(attributes);
 });
-
-function updatePropSymbols(attribute){
-    map.eachLayer(function(layer){
-        if (layer.feature && layer.feature.properties[attribute]){
-            //access feature properties
-            var props = layer.feature.properties;
-
-            //update each feature's radius based on new attribute values
-            var radius = calcPropRadius(props[attribute]);
-            layer.setRadius(radius);
-
-            //update popup content
-            var popupContent = "<p><b>Station:</b> " + props.StationName + "</p>";
-            popupContent += "<p><b>Water Level on " + attribute + ":</b> " + props[attribute] + " ft</p>";
-
-            popup = layer.getPopup();
-            popup.setContent(popupContent).update();
-
-            //updateLegend(attribute);
-        }
-    });
-    updateLegend(attribute);
-}
-
 
 
 //function to retrieve the data and place it on the map
