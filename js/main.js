@@ -196,21 +196,7 @@ function formatDate(dateStr) {
     return monthNames[parseInt(month) - 1] + " " + year;
 }
 
-//update legend with correct date
-function updateLegend(attribute) {
-    if (!container) return;
 
-    var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
-    ['min', 'mean', 'max'].forEach((key, idx) => {
-        var value = dataStats[key];
-        var radius = calcPropRadius(value);
-        var y = 100 - radius;  // Center the circles vertically
-        svg += `<circle cx="${30 + idx * 60}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
-        svg += `<text x="${30 + idx * 60}" y="${y + 20}" text-anchor="middle" font-size="12">${key.toUpperCase()}: ${value.toFixed(1)}</text>`;
-    });
-    svg += `</svg>`;
-    container.innerHTML = svg;
-}
 
 //create legend
 function createLegend(attributes){
@@ -228,6 +214,38 @@ function createLegend(attributes){
     });
 
     map.addControl(new LegendControl());
+}
+
+//update legend with correct date
+function updateLegend(attribute) {
+    if (!container) return;
+
+    var svg = `<svg width="200" height="100" style="background: rgba(255,255,255,0.8); border: 1px solid #000;">`;
+    ['min', 'mean', 'max'].forEach((key, idx) => {
+        var value = dataStats[key];
+        var radius = calcPropRadius(value);
+        var y = 100 - radius;  // Center the circles vertically
+        svg += `<circle cx="${30 + idx * 60}" cy="${y}" r="${radius}" fill="#F47821" stroke="#000" fill-opacity="0.8"></circle>`;
+        svg += `<text x="${30 + idx * 60}" y="${y + 20}" text-anchor="middle" font-size="12">${key.toUpperCase()}: ${value.toFixed(1)}</text>`;
+    });
+    svg += `</svg>`;
+    container.innerHTML = svg;
+}
+
+//build an attributes array
+function processData(data){
+    //empty array to hold attributes
+    var attributes = [];
+    //properties of the first feature in the dataset
+    var properties = data.features[0].properties;
+
+    //push each attribute name into attributes array
+    for(var attribute in properties){
+        if (attribute.startsWith("2023") || attribute.startsWith("2024")){
+            attributes.push(attribute);
+        }
+    }
+    return attributes;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -258,21 +276,7 @@ function updatePropSymbols(attribute){
     updateLegend(attribute);
 }
 
-//build an attributes array
-function processData(data){
-    //empty array to hold attributes
-    var attributes = [];
-    //properties of the first feature in the dataset
-    var properties = data.features[0].properties;
 
-    //push each attribute name into attributes array
-    for(var attribute in properties){
-        if (attribute.startsWith("2023") || attribute.startsWith("2024")){
-            attributes.push(attribute);
-        }
-    }
-    return attributes;
-}
 
 //function to retrieve the data and place it on the map
 function getData(map){
