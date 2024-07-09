@@ -222,7 +222,7 @@ function createLegend(attributes){
             container.innerHTML = '<h3>Water Levels</h3>';
 
             //start attribute legend svg string
-            var svg = '<svg id="attribute-legend" svg width="130px" height="130px">';
+            var svg = '<svg width="130px" height="130px">';
 
             //array of circle names to base loop on
             var circles = ["max", "mean", "min"];
