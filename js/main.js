@@ -225,27 +225,27 @@ function createLegend(attributes){
             var svg = '<svg width="130px" height="130px">';
 
             //array of circle names to base loop on
-            var circles = ["max", "mean", "min"];
+            //var circles = ["max", "mean", "min"];
 
             //loop to add each circle and text to svg string
-            for (var i = 0; i < circles.length; i++) {
+            /* for (var i = 0; i < circles.length; i++) {
                 var radius = calcPropRadius(dataStats[circles[i]]);
                 var cy = 130 - radius;
 
                 // Circle string
                 svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c" cx="65"/>';
-            };
+            }; */
 
             //add circle svg
-            //svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
+            svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
             //text next to circle svg
-            //svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
+            svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
             //close svg string
             svg += '</svg>';
 
             //add svg to container
-            //container.innerHTML += svg;
-            container.insertAdjacentHTML('beforeend', svg);
+            container.innerHTML += svg;
+            //container.insertAdjacentHTML('beforeend', svg);
 
             return container;
         }
