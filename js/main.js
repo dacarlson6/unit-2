@@ -227,23 +227,20 @@ function createLegend(attributes){
             //array of circle names to base loop on
             //var circles = ["max", "mean", "min"];
 
-            /* //loop to add each circle and text to svg string
+            //loop to add each circle and text to svg string
             for (var i = 0; i < circles.length; i++) {
                 var radius = calcPropRadius(dataStats[circles[i]]);
-                var cx = 20 + i * circleSpacing; // Calculate cx based on index
-                var cy = 65 - radius; // Adjust cy to visually center the circles
+                var cy = 130 - radius;
 
                 // Circle string
-                svg += '<circle class="legend-circle" id="' + circles[i] + '" cx="' + cx + '" cy="' + cy + 
-                       '" r="' + radius + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c"></circle>';
-                // Adding text labels
-                svg += '<text x="' + cx + '" y="80" text-anchor="middle" font-size="10">' + labels[i] + '</text>';
-            } */
+                //svg += '<circle class="legend-circle" id="' + circles[i] + '" cy="' + cy + '" r="' + radius + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c"></circle>';
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" r="' + radius + '"cy="' + cy + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c" cx="65"/>';
+            };
 
             //add circle svg
-            svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
+            //svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
             //text next to circle svg
-            svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
+            //svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
             //close svg string
             svg += '</svg>';
 
