@@ -1,5 +1,6 @@
 var map;
 var minValue;
+var dataStats = {};
 
 function createMap(){
     map = L.map('mapid', {
@@ -15,10 +16,9 @@ function createMap(){
     getData(map);
 };
 
-/* function calcStats(data){
+function calcStats(data){
     //create empty array to store all data values
     var allValues = [];
-
     for(var feature of data.features){
         for(var property in feature.properties) {
             var value = feature.properties[property];
@@ -27,10 +27,16 @@ function createMap(){
             }
         }
     }
-    minValue = Math.min(...allValues);
-    maxValue = Math.max(...allValues);
-    meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
-} */
+    dataStats.min = Math.min(...allValues);
+    dataStats.max = Math.max(...allValues);
+
+    //minValue = Math.min(...allValues);
+    //maxValue = Math.max(...allValues);
+
+    var sum = allValues.reduce(function(a, b){return a+b;});
+    dataStats.mean = sum/ allValues.length;
+    //meanValue = allValues.reduce((sum, current) => sum + current, 0) / allValues.length;
+}
 
 function calculateMinValue(data){
     //create empty array to store all data values
@@ -213,6 +219,19 @@ function createLegend(attributes){
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
             container.innerHTML = '<h3>Water Levels</h3>';
+
+            //start attribute legend svg string
+            var svg = '<svg width="130px" height="100px">';
+            //add circle svg
+            svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
+            //text next to circle svg
+            svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
+            //close svg string
+            svg += '</svg>';
+
+            //add svg to container
+            container.innerHTML += svg;
+
             return container;
         }
     });
@@ -279,7 +298,7 @@ function getData(map){
             createPropSymbols(json, attributes);
             createSequenceControls(attributes);
             createLegend(attributes);
-            //calcStats(response);
+            calcStats(response);
         });
 };
 
