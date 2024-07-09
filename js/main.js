@@ -248,8 +248,8 @@ function createLegend(attributes){
             svg += '</svg>';
 
             //add svg to container
-            //container.innerHTML += svg;
-            container.insertAdjacentHTML('beforeend', svg);
+            container.innerHTML += svg;
+            //container.insertAdjacentHTML('beforeend', svg);
 
             return container;
         }
