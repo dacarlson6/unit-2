@@ -225,9 +225,9 @@ function createLegend(attributes){
             var svg = '<svg width="130px" height="130px">';
 
             //array of circle names to base loop on
-            var circles = ["max", "mean", "min"];
+            //var circles = ["max", "mean", "min"];
 
-            //loop to add each circle and text to svg string
+            /* //loop to add each circle and text to svg string
             for (var i = 0; i < circles.length; i++) {
                 var radius = calcPropRadius(dataStats[circles[i]]);
                 var cx = 20 + i * circleSpacing; // Calculate cx based on index
@@ -238,12 +238,12 @@ function createLegend(attributes){
                        '" r="' + radius + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c"></circle>';
                 // Adding text labels
                 svg += '<text x="' + cx + '" y="80" text-anchor="middle" font-size="10">' + labels[i] + '</text>';
-            }
+            } */
 
             //add circle svg
-            //svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
+            svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
             //text next to circle svg
-            //svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
+            svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
             //close svg string
             svg += '</svg>';
 
