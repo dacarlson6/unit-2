@@ -218,19 +218,38 @@ function createLegend(attributes){
         onAdd: function() {
             //create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
+            container.style.padding = "10px";
             container.innerHTML = '<h3>Water Levels</h3>';
 
             //start attribute legend svg string
-            var svg = '<svg width="130px" height="100px">';
+            var svg = '<svg id="attribute-legend" svg width="130px" height="130px">';
+
+            //array of circle names to base loop on
+            var circles = ["max", "mean", "min"];
+
+            //loop to add each circle and text to svg string
+            for (var i = 0; i < circles.length; i++) {
+                var radius = calcPropRadius(dataStats[circles[i]]);
+                var cx = 20 + i * circleSpacing; // Calculate cx based on index
+                var cy = 65 - radius; // Adjust cy to visually center the circles
+
+                // Circle string
+                svg += '<circle class="legend-circle" id="' + circles[i] + '" cx="' + cx + '" cy="' + cy + 
+                       '" r="' + radius + '" fill="#0077be" fill-opacity="0.7" stroke="#005a9c"></circle>';
+                // Adding text labels
+                svg += '<text x="' + cx + '" y="80" text-anchor="middle" font-size="10">' + labels[i] + '</text>';
+            }
+
             //add circle svg
-            svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
+            //svg += '<circle cx="30" cy="50" r="15" fill="#0077be" stroke="#005a9c" stroke-width="1" fill-opacity="0.7"></circle>';
             //text next to circle svg
-            svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
+            //svg += '<text x="60" y="55" font-size="12" alignment-baseline="middle">Water Station</text>';
             //close svg string
             svg += '</svg>';
 
             //add svg to container
-            container.innerHTML += svg;
+            //container.innerHTML += svg;
+            container.insertAdjacentHTML('beforeend', svg);
 
             return container;
         }
